@@ -12,7 +12,11 @@ M.Reload = function()
 		require(module)
 	end
 
-	cmd([[LspRestart]])
+	if vim.fn.exists(":LspStatus") ~= 0 then
+		cmd([[LspRestart]])
+	end
+
+	vim.notify("Reloaded Config!")
 end
 
 M.Restart = function()

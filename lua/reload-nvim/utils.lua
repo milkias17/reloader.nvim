@@ -1,5 +1,4 @@
 local scan = require("plenary.scandir")
-local Path = require("plenary.path")
 local fn = vim.fn
 local M = {}
 
@@ -59,44 +58,12 @@ local function get_loaded_modules()
 	return loaded_modules
 end
 
-local function table_contains(input_table, value)
-	for _, el in ipairs(input_table) do
-		if el == value then
-			return true
-		end
-	end
-
-	return false
-end
-
-local function get_lua_runtime_paths()
-	--TODO: Figure out if nvim_get_runtime_file actually accepts regex
-	local runtime_paths = vim.api.nvim_get_runtime_file("lua/*/*.lua", true)
-	for _, path in ipairs(vim.api.nvim_get_runtime_file("lua/*.lua", true)) do
-		table.insert(runtime_paths, path)
-	end
-	for _, path in ipairs(vim.api.nvim_get_runtime_file("plugin/*.lua", true)) do
-		table.insert(runtime_paths, path)
-	end
-	for _, path in ipairs(vim.api.nvim_get_runtime_file("colors/*.lua", true)) do
-		table.insert(runtime_paths, path)
-	end
-
-	return runtime_paths
-end
-
-local function get_vim_runtime_paths()
-	local runtime_paths = vim.api.nvim_get_runtime_file("plugin/*.vim", true)
-
-	return runtime_paths
-end
-
 M.unload_user_config = function()
 	local loaded_modules = get_loaded_modules()
 	local all_modules = get_modules_in_path(fn.stdpath("config"))
 	local unloaded_modules = {}
 
-	for i, module in ipairs(all_modules) do
+	for _, module in ipairs(all_modules) do
 		if loaded_modules[module] then
 			package.loaded[module] = nil
 			table.insert(unloaded_modules, module)
@@ -104,43 +71,6 @@ M.unload_user_config = function()
 	end
 
 	return unloaded_modules
-end
-
-M.stop_lsp_clients = function()
-	vim.lsp.stop_client(vim.lsp.get_active_clients())
-end
-
-M.start_lsp_clients = function()
-	local configs = require("lspconfig.configs")
-
-	for _, config in pairs(configs) do
-		if table_contains(config.filetypes, vim.bo.filetype) then
-			config.launch()
-		end
-	end
-end
-
-M.reload_runtime_dir = function()
-	local runtime_paths = get_lua_runtime_paths()
-	local loaded_modules = get_loaded_modules()
-	local modules = {}
-
-	for _, runtime_path in ipairs(runtime_paths) do
-		local base_path = Path:new(runtime_path):parent().filename
-		table.insert(modules, get_module_name(runtime_path, base_path))
-	end
-
-	for _, module in ipairs(modules) do
-		if loaded_modules[module] then
-			package.loaded[module] = nil
-		end
-	end
-
-	for _, module in ipairs(modules) do
-		if loaded_modules[module] then
-			pcall(require, module)
-		end
-	end
 end
 
 return M
