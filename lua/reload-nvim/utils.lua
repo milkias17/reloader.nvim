@@ -132,4 +132,14 @@ M.reload_vimscript_runtime = function()
 	end
 end
 
+M.compile_packer = function()
+	local has_packer, packer = pcall(require, "packer")
+
+	if not has_packer then
+		return
+	end
+
+	packer.compile()
+end
+
 return M

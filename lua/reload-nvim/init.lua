@@ -30,6 +30,8 @@ M.Reload = function()
 
 	utils.reload_vimscript_runtime()
 
+	utils.compile_packer()
+
 	if type(M.post_reload_hook) == "function" then
 		M.post_reload_hook()
 	elseif M.post_reload_hook ~= nil then
