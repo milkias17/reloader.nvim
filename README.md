@@ -4,6 +4,8 @@ A simple plugin that reloads your neovim configuration painlessly.
 No more closing neovim and starting it again when you make a change in your configuration
 or when a new plugin update comes, a simple `:Reload` and you are off!
 
+This is an [nvim-reload](https://github.com/famiu/nvim-reload) fork.
+
 ## Installation
 
 ### Requirements
@@ -53,7 +55,3 @@ reloader.post_reload_hook = function()
     require("feline").reset_highlights()
 end
 ```
-
-## Related
-
-This if a fork of [nvim-reload](https://github.com/famiu/nvim-reload)
