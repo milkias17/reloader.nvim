@@ -56,4 +56,4 @@ end
 
 ## Related
 
-A lot of the motivation for this plugin came from [nvim-reload](https://github.com/famiu/nvim-reload)
+This if a fork of [nvim-reload](https://github.com/famiu/nvim-reload)
