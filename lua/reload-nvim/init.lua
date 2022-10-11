@@ -30,7 +30,7 @@ M.Reload = function()
 
 	utils.reload_vimscript_runtime()
 
-	if type(M.pre_reload_hook) == "function" then
+	if type(M.post_reload_hook) == "function" then
 		M.post_reload_hook()
 	elseif M.post_reload_hook ~= nil then
 		vim.notify("post_reload hook is not a function", vim.log.levels.ERROR, { title = "reload-nvim" })
