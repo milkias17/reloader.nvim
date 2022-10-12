@@ -138,7 +138,7 @@ M.unload_keybindings = function()
 
 	for _, mode in ipairs(modes) do
 		for _, keymap in ipairs(vim.api.nvim_get_keymap(mode)) do
-			vim.api.nvim_del_keymap(mode, keymap.lhs)
+			pcall(vim.api.nvim_del_keymap, mode, keymap.lhs)
 		end
 	end
 end
