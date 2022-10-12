@@ -21,6 +21,7 @@ M.Reload = function()
 	end
 
 	utils.unload_user_config()
+	utils.unload_keybindings()
 
 	vim.cmd([[source $MYVIMRC]])
 
@@ -29,6 +30,7 @@ M.Reload = function()
 	end
 
 	utils.reload_vimscript_runtime()
+	utils.reload_lua_runtime()
 
 	utils.compile_packer()
 
