@@ -134,8 +134,12 @@ M.unload_user_config = function()
 end
 
 M.unload_keybindings = function()
-	for _, keymap in ipairs(vim.api.nvim_get_keymap("n")) do
-		vim.api.nvim_del_keymap("n", keymap.lhs)
+	local modes = { "n", "i", "v", "s", "x", "o", "l", "c", "t" }
+
+	for _, mode in ipairs(modes) do
+		for _, keymap in ipairs(vim.api.nvim_get_keymap(mode)) do
+			vim.api.nvim_del_keymap(mode, keymap.lhs)
+		end
 	end
 end
 
