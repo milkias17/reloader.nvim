@@ -74,16 +74,6 @@ local function get_loaded_modules()
 	return loaded_modules
 end
 
-local function table_contains(input_table, value)
-	for _, el in ipairs(input_table) do
-		if el == value then
-			return true
-		end
-	end
-
-	return false
-end
-
 local function get_viml_files_in_path(path)
 	local viml_files = {}
 
@@ -144,17 +134,15 @@ M.unload_keybindings = function()
 end
 
 M.stop_lsp_clients = function()
-	vim.lsp.stop_client(vim.lsp.get_active_clients(), true)
+    vim.lsp.stop_client(vim.lsp.get_active_clients(), true)
 end
 
 M.start_lsp_clients = vim.schedule_wrap(function()
-	local configs = require("lspconfig.configs")
+    local configs = require("lspconfig.util").get_other_matching_providers(vim.bo.filetype)
 
-	for _, config in pairs(configs) do
-		if table_contains(config.filetypes, vim.bo.filetype) then
-			config.launch()
-		end
-	end
+    for _, config in ipairs(configs) do
+        config.launch()
+    end
 end)
 
 M.reload_vimscript_runtime = function()
